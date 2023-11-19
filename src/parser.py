@@ -12,5 +12,3 @@ class YamlParser:
             tasks = safe_load(tasks_file)
             merged_data = {**builds, **tasks}
         return merged_data
-
-

@@ -37,5 +37,3 @@ async def get_tasks(build_data: Build, request: Request) -> Response:
         return Response(status_code=200, content=json.dumps(sorted_tasks))
     else:
         return Response(status_code=401, content="Message: Not authorized")
-
-

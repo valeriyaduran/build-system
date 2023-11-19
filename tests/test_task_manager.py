@@ -36,8 +36,7 @@ class TestTaskManager(TestCase):
                 {"name": "task7", "dependencies": ["task9"]},
                 {"name": "task8", "dependencies": ["task9"]},
                 {"name": "task9", "dependencies": []},
-                {"name": "task10", "dependencies": ["task9"]},
-            ]
+                {"name": "task10", "dependencies": ["task9"]}, ]
         }
 
     def test_get_tasks_by_build_name_success(self):
