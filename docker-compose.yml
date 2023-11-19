@@ -1,0 +1,15 @@
+services:
+  fastapi:
+    container_name: saber-build-system-fastapi
+    restart: always
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - fastapi_volume:/saber_build_system
+volumes:
+  fastapi_volume:
+
