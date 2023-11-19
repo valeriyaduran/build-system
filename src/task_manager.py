@@ -3250,7 +3250,7 @@ class TaskManager:
         tasks = [build["tasks"] for build in self.extracted_data["builds"] if build["name"] == self.build_name]
         return tasks[0]
 
-    def create_graph_for_sorting(self, tasks: list):
+    def create_graph_for_sorting(self, tasks: list) -> None:
         for task in tasks:
             for task_info in self.extracted_data["tasks"]:
                 if task_info["name"] == task:

@@ -6,7 +6,7 @@ class BuildNotFoundException(Exception):
         self.build_name = build_name
 
 
-async def build_not_found_exception_handler(request: Request, exc: BuildNotFoundException):
+async def build_not_found_exception_handler(request: Request, exc: BuildNotFoundException) -> Response:
     return Response(
         status_code=400,
         content=f"Build name '{exc.build_name}' not found",
