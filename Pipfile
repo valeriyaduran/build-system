@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 fastapi = {version = "==0.104.1", extras = ["all"]}
 pyyaml = "==6.0.1"
-pytest = "==7.4.3"
 
 [dev-packages]
 

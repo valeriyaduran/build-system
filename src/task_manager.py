@@ -1,6 +1,5 @@
 import graphlib
-
-from handlers.exception_handler import BuildNotFoundException
+from typing import Dict
 
 builds_and_tasks = {
     "builds": [
@@ -3245,12 +3244,10 @@ class TaskManager:
     def __init__(self, build_name: str, extracted_data: dict):
         self.build_name = build_name
         self.extracted_data = extracted_data
-        self.graph = {}
+        self.graph: Dict[str, set] = {}
 
     def get_tasks_by_build_name(self) -> list:
         tasks = [build["tasks"] for build in self.extracted_data["builds"] if build["name"] == self.build_name]
-        if not tasks:
-            raise BuildNotFoundException
         return tasks[0]
 
     def create_graph_for_sorting(self, tasks: list):

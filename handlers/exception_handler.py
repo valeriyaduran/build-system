@@ -1,16 +1,13 @@
 from fastapi import Request, Response
 
-from src.main import app
-
 
 class BuildNotFoundException(Exception):
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self, build_name: str):
+        self.build_name = build_name
 
 
-@app.exception_handler(BuildNotFoundException)
 async def build_not_found_exception_handler(request: Request, exc: BuildNotFoundException):
     return Response(
         status_code=400,
-        content={"message": f"Build name '{exc.name}' not found"},
+        content=f"Build name '{exc.build_name}' not found",
     )
