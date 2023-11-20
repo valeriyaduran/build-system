@@ -1,7 +1,7 @@
 from unittest import TestCase, main
 from unittest.mock import Mock
 
-from src.task_manager import TaskManager
+from src.task_manager import TaskManager, TopologicalSorting
 
 
 class TestTaskManager(TestCase):
@@ -23,7 +23,7 @@ class TestTaskManager(TestCase):
                     },
                     {
                         "name": "build4",
-                        "tasks": ["task6", "task7", "task8", "task9", "task10"]
+                        "tasks": ["task6", "task7", "task9", "task10"]
                     },
                 ],
             "tasks": [
@@ -32,9 +32,8 @@ class TestTaskManager(TestCase):
                 {"name": "task3", "dependencies": []},
                 {"name": "task4", "dependencies": []},
                 {"name": "task5", "dependencies": []},
-                {"name": "task6", "dependencies": ["task5", "task7", "task8"]},
+                {"name": "task6", "dependencies": ["task5", "task7"]},
                 {"name": "task7", "dependencies": ["task9"]},
-                {"name": "task8", "dependencies": ["task9"]},
                 {"name": "task9", "dependencies": []},
                 {"name": "task10", "dependencies": ["task9"]}, ]
         }
@@ -87,11 +86,11 @@ class TestTaskManager(TestCase):
 
     def test_sort_tasks_by_dependencies_diamond_dependencies(self):
         task_manager = TaskManager(build_name="build4", extracted_data=self.extracted_data)
-        task_manager.create_graph_for_sorting(tasks=["task6", "task7", "task8", "task9", "task10"])
+        task_manager.create_graph_for_sorting(tasks=["task6", "task7", "task9", "task10"])
         self.assertEqual(task_manager.sort_tasks_by_dependencies(),
-                         ['task5', 'task9', 'task7', 'task8', 'task10', 'task6'])
+                         ['task5', 'task9', 'task7', 'task6', 'task10'])
 
-    def test_get_sorted_tasks_called(self):
+    def test_get_sorted_tasks_called_all_inside_methods(self):
         task_manager = TaskManager(build_name="build1", extracted_data=self.extracted_data)
         task_manager.get_tasks_by_build_name = Mock()
         task_manager.create_graph_for_sorting = Mock()
@@ -102,5 +101,29 @@ class TestTaskManager(TestCase):
         task_manager.sort_tasks_by_dependencies.assert_called_once()
 
 
-if __name__ == '__main__':
+class TestTopologicalSorting(TestCase):
+    def setUp(self) -> None:
+        self.graph = {'task1': [],
+                      'task2': ['task3', 'task1'],
+                      'task4': ['task3'],
+                      'task5': ['task4']}
+
+    def test_add_node_to_stack_tasks_not_in_graph_keys(self):
+        topological_sorting = TopologicalSorting(self.graph)
+        topological_sorting.add_node_to_stack(task="task3")
+        self.assertEqual(topological_sorting.stack_tasks_not_in_graph_keys, ["task3"])
+
+    def test_add_node_to_stack_tasks_in_graph_keys(self):
+        topological_sorting = TopologicalSorting(self.graph)
+        topological_sorting.add_node_to_stack(task="task4")
+        self.assertEqual(topological_sorting.stack_tasks_in_graph_keys, ["task4"])
+
+    def test_add_node_to_stack_called(self):
+        topological_sorting = TopologicalSorting(self.graph)
+        topological_sorting.add_node_to_stack = Mock()
+        topological_sorting.run_topological_sorting()
+        topological_sorting.add_node_to_stack.assert_called()
+
+
+if __name__ == "__main__":
     main()
