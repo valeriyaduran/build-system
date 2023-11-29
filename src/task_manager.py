@@ -4,7 +4,7 @@ from handlers.exception_handler import BuildNotFoundException
 
 
 class TaskManager:
-    def __init__(self, build_name: str, extracted_data: dict):
+    def __init__(self, build_name: str, extracted_data: dict) -> None:
         self.build_name = build_name
         self.extracted_data = extracted_data
         self.graph: Dict[str, set] = {}
@@ -35,7 +35,7 @@ class TaskManager:
 
 
 class TopologicalSorting:
-    def __init__(self, graph: dict):
+    def __init__(self, graph: dict) -> None:
         self.graph = graph
         self.tasks = list(graph.keys())
         self.visited_nodes = {task: False for task in self.tasks}

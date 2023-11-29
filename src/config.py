@@ -1,1 +1,3 @@
-builds_and_tasks = {}
+builds_and_tasks: dict = {}
+build_file_path: str = "builds/builds.yaml"
+tasks_file_path: str = "builds/tasks.yaml"
