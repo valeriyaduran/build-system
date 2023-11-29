@@ -1,11 +1,11 @@
-## saber-build-system
-### Тестовое задание:
-[ТЗ Python.docx](https://github.com/valeriyaduran/saber-build-system/files/13406893/Python.docx)
+## build-system
+### Описание:
+Билд-система, в основе которой лежит сортировка связанных между собой задач на основе глубины их зависимостей.
 
 ### Установка и запуск сервиса:
 Предварительные условия:
 Должен быть запущен docker daemon
-1) Cклонировать репозиторий: git clone https://github.com/valeriyaduran/saber-build-system.git
+1) Cклонировать репозиторий: git clone https://github.com/valeriyaduran/build-system.git
 2) Поднять сервис: из рабочей директории проекта необходимо в терминале ввести следующую команду: docker compose up или sudo docker compose up (в зависимости от наличия соответствующих permissions)
 
 
@@ -17,7 +17,7 @@
 **Пример запроса**:
 ```
 curl --location 'http://0.0.0.0:8080/get_tasks' \
---header 'Authorization: <API_KEY>' \
+--header 'API-Key: <API_KEY>' \
 --header 'Content-Type: application/json' \
 --data '{"build": "front_arm"}'
 ```

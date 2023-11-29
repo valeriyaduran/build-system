@@ -1,6 +1,6 @@
 services:
   fastapi:
-    container_name: saber-build-system-fastapi
+    container_name: build-system-fastapi
     restart: always
     build:
       context: .
@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     volumes:
-      - fastapi_volume:/saber_build_system
+      - fastapi_volume:/build_system
 volumes:
   fastapi_volume:
 

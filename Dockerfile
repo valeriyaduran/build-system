@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 RUN pip3 install pipenv
 
-WORKDIR /saber_build_system
+WORKDIR /build_system
 
 COPY Pipfile .
 COPY Pipfile.lock .
