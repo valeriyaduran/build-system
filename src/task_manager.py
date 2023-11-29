@@ -1,5 +1,7 @@
 from typing import Dict
 
+from handlers.exception_handler import BuildNotFoundException
+
 
 class TaskManager:
     def __init__(self, build_name: str, extracted_data: dict):
@@ -9,6 +11,9 @@ class TaskManager:
 
     def get_tasks_by_build_name(self) -> list:
         tasks = [build["tasks"] for build in self.extracted_data["builds"] if build["name"] == self.build_name]
+        if not tasks:
+            raise BuildNotFoundException(message=f"No build '{self.build_name}' found",
+                                         status_code=400)
         return tasks[0]
 
     def create_graph_for_sorting(self, tasks: list) -> None:

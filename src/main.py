@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response, Depends
 
-from handlers.exception_handler import BuildNotFoundException, build_not_found_exception_handler
+from handlers.exception_handler import add_exception_handlers
 from src.dependencies import verify_api_key
 from src.models import Build
 from src.config import builds_and_tasks
@@ -19,18 +19,18 @@ async def lifespan(app: FastAPI):
     builds_and_tasks.clear()
 
 
-app = FastAPI(dependencies=[Depends(verify_api_key)], lifespan=lifespan)
-app.add_exception_handler(BuildNotFoundException, build_not_found_exception_handler)
+def create_app() -> FastAPI:
+    application = FastAPI(dependencies=[Depends(verify_api_key)], lifespan=lifespan)
+    add_exception_handlers(app=application)
+    return application
+
+
+app = create_app()
 
 
 @app.post("/get_tasks")
 async def get_tasks(build_data: Build, request: Request) -> Response:
     build_name = build_data.build
-    if not build_name:
-        return Response(status_code=400, content="Message: Empty build name")
-    try:
-        task_manager = TaskManager(build_name=build_name, extracted_data=builds_and_tasks["data"]())
-        sorted_tasks = task_manager.get_sorted_tasks()
-    except IndexError:
-        raise BuildNotFoundException(build_name)
+    task_manager = TaskManager(build_name=build_name, extracted_data=builds_and_tasks["data"]())
+    sorted_tasks = task_manager.get_sorted_tasks()
     return Response(status_code=200, content=json.dumps(sorted_tasks))
