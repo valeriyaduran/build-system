@@ -1,6 +1,6 @@
 from pydantic import BaseModel, field_validator
 
-from handlers.exception_handler import EmptyBuildNameException
+from src.handlers.exception_handler import EmptyBuildNameException
 
 
 class Build(BaseModel):

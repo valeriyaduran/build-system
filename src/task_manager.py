@@ -1,6 +1,6 @@
 from typing import Dict
 
-from handlers.exception_handler import BuildNotFoundException
+from src.handlers.exception_handler import BuildNotFoundException
 
 
 class TaskManager:
@@ -27,10 +27,17 @@ class TaskManager:
         sorted_tasks = topological_sorting.run_topological_sorting()
         return sorted_tasks
 
-    def get_sorted_tasks(self) -> list:
-        tasks = self.get_tasks_by_build_name()
-        self.create_graph_for_sorting(tasks=tasks)
-        sorted_data = self.sort_tasks_by_dependencies()
+    def check_if_tasks_were_cached(self, cached_tasks):
+        if self.build_name in cached_tasks:
+            return cached_tasks[self.build_name]
+
+    def get_sorted_tasks(self, cached_tasks) -> list:
+        sorted_data = self.check_if_tasks_were_cached(cached_tasks)
+        if not sorted_data:
+            tasks = self.get_tasks_by_build_name()
+            self.create_graph_for_sorting(tasks=tasks)
+            sorted_data = self.sort_tasks_by_dependencies()
+            cached_tasks[self.build_name] = sorted_data
         return sorted_data
 
 
