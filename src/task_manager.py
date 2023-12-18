@@ -24,8 +24,8 @@ class TaskManager:
                     self.graph[task] = set(task_info['dependencies'])
 
     def sort_tasks_by_dependencies(self) -> list:
-        topological_sorting = TopologicalSorting(self.graph)
-        sorted_tasks = topological_sorting.run_topological_sorting()
+        task_sorting = TaskSorting(self.graph)
+        sorted_tasks = task_sorting.run_task_sorting()
         return sorted_tasks
 
     def check_if_tasks_were_cached(self, cached_tasks) -> list:
@@ -33,10 +33,9 @@ class TaskManager:
             return cached_tasks[self.build_name]
 
     def add_task_to_cached(self, cached_tasks, sorted_data) -> None:
-        if len(cached_tasks) < self.max_len_of_cached_tasks:
-            cached_tasks[self.build_name] = sorted_data
-        else:
+        if len(cached_tasks) >= self.max_len_of_cached_tasks:
             cached_tasks.pop(next(iter(cached_tasks)))
+        cached_tasks[self.build_name] = sorted_data
 
     def get_sorted_tasks(self, cached_tasks) -> list:
         sorted_data = self.check_if_tasks_were_cached(cached_tasks=cached_tasks)
@@ -48,7 +47,7 @@ class TaskManager:
         return sorted_data
 
 
-class TopologicalSorting:
+class TaskSorting:
     def __init__(self, graph: dict) -> None:
         self.graph = graph
         self.tasks = list(graph.keys())
@@ -66,7 +65,7 @@ class TopologicalSorting:
         else:
             self.stack_tasks_not_in_graph_keys.append(task)
 
-    def run_topological_sorting(self) -> list:
+    def run_task_sorting(self) -> list:
         for task in self.tasks:
             if not self.visited_nodes[task]:
                 self.add_node_to_stack(task)

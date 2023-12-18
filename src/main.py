@@ -32,5 +32,5 @@ app = create_app()
 async def get_tasks(build_data: Build, request: Request) -> Response:
     build_name = build_data.build
     task_manager = TaskManager(build_name=build_name, extracted_data=builds_and_tasks["data"]())
-    sorted_tasks = task_manager.get_sorted_tasks(cached_tasks)
+    sorted_tasks = task_manager.get_sorted_tasks(cached_tasks=cached_tasks)
     return Response(status_code=200, content=json.dumps(sorted_tasks))
