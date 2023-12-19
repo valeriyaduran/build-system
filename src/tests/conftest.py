@@ -1,7 +1,10 @@
 from pytest import fixture
+from fastapi.testclient import TestClient
+
+from src.main import app
 
 
-@fixture(autouse=True)
+@fixture()
 def create_test_data() -> dict:
     extracted_data = {
         "builds":
@@ -30,10 +33,15 @@ def create_test_data() -> dict:
     return extracted_data
 
 
-@fixture(autouse=True)
+@fixture()
 def create_graph() -> dict:
     graph = {'task1': [],
              'task2': ['task3', 'task1'],
              'task4': ['task3'],
              'task5': ['task4']}
     return graph
+
+
+@fixture()
+def test_client():
+    yield TestClient(app)

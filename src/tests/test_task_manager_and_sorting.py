@@ -2,7 +2,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.handlers.exception_handler import BuildNotFoundException, EmptyBuildNameException
+from src.handlers.exception_handler import BuildNotFoundException
 from src.task_manager import TaskManager, TaskSorting
 
 
