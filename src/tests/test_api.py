@@ -11,6 +11,34 @@ def test_get_tasks_lifespan_called(mocked_builds_and_tasks, create_test_data, te
         mocked_builds_and_tasks.assert_called()
 
 
+@pytest.mark.parametrize("build_name, api_key, url",
+                         [("build1", "incorrect_key", "/get_tasks")])
+@mock.patch("src.parser.YamlParser.parse_build_and_tasks_yaml_files")
+def test_get_tasks_incorrect_api_key(mocked_builds_and_tasks, build_name, api_key, url, create_test_data,
+                                     test_client):
+    mocked_builds_and_tasks.return_value = create_test_data
+    with test_client:
+        response = test_client.post(url=url,
+                                    headers={"API-Key": api_key},
+                                    json={"build": build_name})
+        assert response.status_code == 401
+        assert response.json() == {"detail": "API-Key is invalid"}
+
+
+@pytest.mark.parametrize("build_name, api_key, url",
+                         [("build1", "", "/get_tasks")])
+@mock.patch("src.parser.YamlParser.parse_build_and_tasks_yaml_files")
+def test_get_tasks_no_api_key(mocked_builds_and_tasks, build_name, api_key, url, create_test_data,
+                              test_client):
+    mocked_builds_and_tasks.return_value = create_test_data
+    with test_client:
+        response = test_client.post(url=url,
+                                    headers={"API-Key": api_key},
+                                    json={"build": build_name})
+        assert response.status_code == 400
+        assert response.json() == {"detail": "No API-Key provided"}
+
+
 @pytest.mark.parametrize("build_name, url, expected_result",
                          [("build1", "/get_tasks", ["task3", "task2", "task1"])])
 @mock.patch("src.parser.YamlParser.parse_build_and_tasks_yaml_files")

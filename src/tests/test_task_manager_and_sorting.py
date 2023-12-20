@@ -20,13 +20,6 @@ class TestTaskManager:
         with pytest.raises(expected_exception):
             task_manager.get_tasks_by_build_name()
 
-    # @pytest.mark.parametrize("build_name, expected_exception",
-    #                          [("", EmptyBuildNameException)])
-    # def test_get_tasks_by_build_name_empty_build(self, build_name, expected_exception, create_test_data):
-    #     task_manager = TaskManager(build_name=build_name, extracted_data=create_test_data)
-    #     with pytest.raises(expected_exception):
-    #         task_manager.get_tasks_by_build_name()
-
     @pytest.mark.parametrize("build_name, tasks",
                              [("build1", ["task1", "task2", "task3"])])
     def test_create_graph_for_sorting_check_types(self, build_name, tasks, create_test_data):
@@ -137,23 +130,23 @@ class TestTaskManager:
     #     task_manager.create_graph_for_sorting.assert_called_once()
     #     task_manager.sort_tasks_by_dependencies.assert_called_once()
     #     task_manager.add_task_to_cached.assert_called_once()
-    #
-    # @pytest.mark.parametrize("build_name, cached_tasks",
-    #                          [("build4", {"build4": ["task5", "task9", "task7", "task6", "task10"]})])
-    # def test_get_sorted_tasks_called_only_check_if_tasks_were_cached_method(self, build_name, cached_tasks,
-    #                                                                         create_test_data):
-    #     task_manager = TaskManager(build_name=build_name, extracted_data=create_test_data)
-    #     task_manager.check_if_tasks_were_cached = Mock()
-    #     task_manager.get_tasks_by_build_name = Mock()
-    #     task_manager.create_graph_for_sorting = Mock()
-    #     task_manager.sort_tasks_by_dependencies = Mock()
-    #     task_manager.add_task_to_cached = Mock()
-    #     task_manager.get_sorted_tasks(cached_tasks=cached_tasks)
-    #     task_manager.check_if_tasks_were_cached.assert_called_once()
-    #     task_manager.get_tasks_by_build_name.assert_not_called()
-    #     task_manager.create_graph_for_sorting.assert_not_called()
-    #     task_manager.sort_tasks_by_dependencies.assert_not_called()
-    #     task_manager.add_task_to_cached.assert_not_called()
+
+    @pytest.mark.parametrize("build_name, cached_tasks",
+                             [("build4", {"build4": ["task5", "task9", "task7", "task6", "task10"]})])
+    def test_get_sorted_tasks_called_only_check_if_tasks_were_cached_method(self, build_name, cached_tasks,
+                                                                            create_test_data):
+        task_manager = TaskManager(build_name=build_name, extracted_data=create_test_data)
+        task_manager.check_if_tasks_were_cached = Mock()
+        task_manager.get_tasks_by_build_name = Mock()
+        task_manager.create_graph_for_sorting = Mock()
+        task_manager.sort_tasks_by_dependencies = Mock()
+        task_manager.add_task_to_cached = Mock()
+        task_manager.get_sorted_tasks(cached_tasks=cached_tasks)
+        task_manager.check_if_tasks_were_cached.assert_called_once()
+        task_manager.get_tasks_by_build_name.assert_not_called()
+        task_manager.create_graph_for_sorting.assert_not_called()
+        task_manager.sort_tasks_by_dependencies.assert_not_called()
+        task_manager.add_task_to_cached.assert_not_called()
 
 
 class TestTaskSorting:
