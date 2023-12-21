@@ -174,6 +174,6 @@ class TestTaskSorting:
         task_sorting.add_node_to_stack.assert_called()
 
     @pytest.mark.parametrize("graph, expected_result", [({}, [])])
-    def run_task_sorting_empty_graph(self, graph, expected_result):
+    def test_run_task_sorting_empty_graph(self, graph, expected_result):
         task_sorting = TaskSorting(graph=graph)
         assert task_sorting.run_task_sorting() == expected_result

@@ -9,7 +9,7 @@ builds:
   - task4
   - task5
 - name: build3
-  tasks:
+  tasks: []
 - name: build4
   tasks:
   - task6
