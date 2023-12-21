@@ -46,7 +46,7 @@ and to see the report:
 coverage report -m
 ```
 #### Test coverage report
-![](/Users/valeriaduran/Desktop/Screenshot 2023-12-21 at 10.34.22.png)
+<img width="451" alt="Screenshot 2023-12-21 at 10 34 22" src="https://github.com/valeriyaduran/build-system/assets/36791323/1b40fad6-1766-416c-91e8-de1993b5292a">
 
 #### Code style testing:
 To check the code for stylistic errors and standards violations enter the following command from the project’s working directory in the terminal:
