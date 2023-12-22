@@ -43,5 +43,13 @@ def create_graph() -> dict:
 
 
 @fixture()
+def mock_builds_and_tasks(mocker, create_test_data) -> dict:
+    mocked_builds_and_tasks = mocker.patch(
+        "src.parser.YamlParser.parse_build_and_tasks_yaml_files",
+    )
+    mocked_builds_and_tasks.return_value = create_test_data
+    return mocked_builds_and_tasks.return_value
+
+@fixture()
 def test_client():
     yield TestClient(app)
