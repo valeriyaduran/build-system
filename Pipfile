@@ -6,12 +6,12 @@ name = "pypi"
 [packages]
 fastapi = {version = "==0.104.1", extras = ["all"]}
 pyyaml = "==6.0.1"
-flake8 = "==6.1.0"
 pytest = "==7.4.3"
 coverage = "==7.3.3"
 pytest-mock = "==3.12.0"
 
 [dev-packages]
+flake8 = "==6.1.0"
 
 [requires]
 python_version = "3.10"
